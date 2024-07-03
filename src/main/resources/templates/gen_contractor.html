@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GenContractor Page</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, It is GenContractor page</h1>
+        <form action="genContractor/create_sub" th:object="${subContractor}" method="post">
+            <h2>Create a subContractor</h2>
+            <label for="subContractorName">SubContractor Name:</label>
+            <input type="text" id="subContractorName" th:field="*{name}" required>
+            <button type="submit">Create SubContractor</button>
+        </form>
+        <!-- You can add additional elements here, like a list of existing subcontractors or any other relevant information -->
+    </div>
+</body>
+</html>

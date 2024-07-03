@@ -1,0 +1,116 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Project Manager Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<h1>Project Manager Details</h1>
+<p>Name: <span th:text="${projectManager.name}"></span></p>
+<p>Subcontractor: <span th:text="${projectManager.subContractor.name}"></span></p>
+<p>Tasks Done: <span th:text="${projectManager.done}">No</span></p>
+
+<h2>Tasks Taken by Project Manager</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through tasks taken by the project manager and sort them by priority -->
+    <tr th:each="task : ${projectManager.tasks}">
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.priority}"></td>
+        <td th:text="${task.done ? 'Done' : 'Not Done'}"></td>
+        <td>
+            <!-- Form to mark the task as done -->
+            <form th:action="@{'/pm/' + ${pmId} + '/taskDone'}" method="post" onsubmit="handleMarkAsDone(event, this)">
+                <button type="submit" th:disabled="${task.done}">Mark as Done</button>
+                <input type="hidden" name="taskId" th:value="${task.id}" />
+            </form>
+        </td>
+       <!-- <td th:action="@{'/pm/' + ${pmId} + '/taskDone/'}" method="post">
+            <button type="reset">Put Done</button>
+
+        </td>-->
+    </tr>
+
+    </tbody>
+</table>
+<div>
+    <a th:href="@{/pm/{pmId}/tasks(pmId=${projectManager.id})}">View Tasks</a>
+</div>
+
+<!-- JavaScript code -->
+<script>
+    function handleSelect(event, form) {
+        event.preventDefault(); // Prevent form submission
+        const taskId = form.querySelector('input[name="taskId"]').value; // Get task ID
+        form.parentNode.parentNode.remove(); // Remove the task from the table
+
+        // Send an AJAX request to delete the task from the server
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                taskId: taskId
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Task selected successfully');
+                    // Optionally, you can update the tasks list without reloading the page
+                    // Here you can add code to update the "Tasks Taken by Project Manager" table
+                } else {
+                    console.error('Failed to select task');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+</body>
+</html>
+<!--
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Project Manager Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<h1>Project Manager Details</h1>
+<p>Name: <span th:text="${projectManager.name}"></span></p>
+<p>Subcontractor: <span th:text="${projectManager.subContractor.name}"></span></p>
+<p>Tasks Done: <span th:text="${projectManager.done}">No</span></p>
+
+<a th:href="@{/pm/{pmId}/tasks(pmId=${projectManager.id})}">View Tasks</a>
+</body>
+</html>
+-->

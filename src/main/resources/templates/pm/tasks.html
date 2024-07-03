@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Project Manager Page</title>
+    <style>
+        /* Add your CSS styles here */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<h1>Available Tasks</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Priority</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through tasks -->
+    <tr th:each="task : ${tasks}">
+        <!-- Display task details -->
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.priority}"></td>
+        <!-- Add a button to select the task -->
+        <td>
+            <form th:action="@{'/pm/' + ${pmId} + '/takeTask/' + ${task.id}}" method="post"
+                  onsubmit="handleSelect(event, this)">
+                <button type="submit">Select</button>
+                <!-- Add hidden input field to store task ID -->
+                <input type="hidden" name="taskId" th:value="${task.id}" />
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- JavaScript code -->
+<script>
+    function handleSelect(event, form) {
+        event.preventDefault(); // Prevent form submission
+        const taskId = form.querySelector('input[name="taskId"]').value; // Get task ID
+        form.parentNode.parentNode.remove();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SubContractor Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${subContractor.name}">SubContractor Name</h1>
+
+    <h2>Create Task</h2>
+    <form th:action="@{'/subContractor/' + ${subContractor.id} + '/createTask'}" th:object="${newTask}" method="post">
+        <label for="taskName">Task Name:</label>
+        <input type="text" id="taskName" th:field="*{name}" required>
+        <label for="taskPriority">Priority:</label>
+        <input type="number" id="taskPriority" th:field="*{priority}" required>
+        <button type="submit">Create Task</button>
+    </form>
+
+    <h2>Create Project Manager</h2>
+    <form th:action="@{'/subContractor/' + ${subContractor.id} + '/createPM'}" th:object="${newProjectManager}" method="post">
+        <label for="pmName">Project Manager Name:</label>
+        <input type="text" id="pmName" th:field="*{name}" required>
+        <button type="submit">Create Project Manager</button>
+    </form>
+
+    <h2>Tasks</h2>
+    <ul>
+        <li th:each="task : ${tasks}" th:text="${task.name} + ' (Priority: ' + ${task.priority} + ')'">Task Name (Priority)</li>
+    </ul>
+</div>
+
+<div>
+    <a th:href="@{${scId} + '/info'}">View full info about subContractor</a>
+</div>
+</body>
+</html>

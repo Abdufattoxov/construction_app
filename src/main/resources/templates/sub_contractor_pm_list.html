@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SubContractor Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<h1>SubContractor details</h1>
+<h2>Project Managers</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Tasks Done</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pm : ${projectManagers}">
+        <td th:text="${pm.name}"></td>
+        <td th:text="${pm.done ? 'Yes' : 'No'}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
